@@ -4,12 +4,12 @@ const dateHelper = require('../helper/date-helper')
 const tabel = 'tb_users'
 
 const getAllUsers = () => {
-    const SQLQuery = `SELECT * FROM ${tabel}`
+    const SQLQuery = `SELECT * FROM ${tabel} WHERE active='T' AND safe_delete='F'`
 
     return dbPool.execute(SQLQuery)
 }
 
-const createNewUser = async (body, hashedPassword) => {
+const createNewUser = (body, hashedPassword) => {
     let date_now = new Date()
     let result_date = dateHelper.getDateNow(date_now)
     const SQLQuery = `INSERT INTO ${tabel}
@@ -19,7 +19,35 @@ const createNewUser = async (body, hashedPassword) => {
     return dbPool.execute(SQLQuery)
 }
 
+const updateDataUser = (body, hashedPassword, idUser) => {
+    let date_now = new Date()
+    let result_date = dateHelper.getDateNow(date_now)
+    const SQLQuery = `UPDATE ${tabel}
+                    SET username='${body.username}', password='${hashedPassword}', nama='${body.nama}', email='${body.email}', active='${body.active}', updated_at='${result_date}'
+                    WHERE id_user='${idUser}'`
+
+    return dbPool.execute(SQLQuery)
+}
+
+const updateSaldoUser = (saldo, idUser) => {
+    const SQLQuery = `UPDATE ${tabel} SET saldo='${saldo}' WHERE id_user='${idUser}'`
+
+    return dbPool.execute(SQLQuery)
+}
+
+const deleteUser = (idUser) => {
+    let date_now = new Date()
+    let result_date = dateHelper.getDateNow(date_now)
+    const SQLQuery = `UPDATE ${tabel} SET updated_at='${result_date}', deleted_at='${result_date}', active='F', safe_delete='T'
+                        WHERE id_user='${idUser}'`
+
+    return dbPool.execute(SQLQuery)
+}
+
 module.exports = {
     getAllUsers,
-    createNewUser
+    createNewUser,
+    updateDataUser,
+    updateSaldoUser,
+    deleteUser
 }

@@ -4,7 +4,7 @@ const dateHelper = require('../helper/date-helper')
 const tabel = 'tb_kategori'
 
 const getAllKategori = () => {
-    const SQLQuery = `SELECT * FROM ${tabel} WHERE safe_delete='F'`
+    const SQLQuery = `SELECT nama, jenis, warna, icon, created_at FROM ${tabel} WHERE safe_delete='F'`
 
     return dbPool.execute(SQLQuery)
 }

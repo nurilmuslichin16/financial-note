@@ -4,7 +4,7 @@ const dateHelper = require('../helper/date-helper')
 const tabel = 'tb_users'
 
 const getAllUsers = () => {
-    const SQLQuery = `SELECT * FROM ${tabel} WHERE active='T' AND safe_delete='F'`
+    const SQLQuery = `SELECT username, nama, email FROM ${tabel} WHERE active='T' AND safe_delete='F'`
 
     return dbPool.execute(SQLQuery)
 }
